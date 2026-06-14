@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d3fw388vlphjy"]
+[gd_scene format=3 uid="uid://d3fw388vlphjy"]
 
 [ext_resource type="PackedScene" uid="uid://dslpwxbcf8qh6" path="res://Scenes/bg.tscn" id="1_ebmjs"]
 [ext_resource type="Script" uid="uid://dh6dpmvkmqrce" path="res://Scripts/quit_handler.gd" id="1_i6g32"]
@@ -8,79 +8,89 @@
 [ext_resource type="PackedScene" uid="uid://bw3p0ot44s3v2" path="res://Scenes/Characters/ralsei.tscn" id="4_3dryh"]
 [ext_resource type="PackedScene" uid="uid://dws1o24c7b1nv" path="res://Scenes/Interface/rhythm_board.tscn" id="5_1l0tm"]
 [ext_resource type="FontFile" uid="uid://gee05d7cqp85" path="res://Assets/Fonts/undertale-deltarune-text-font-extended.otf" id="5_wowpa"]
-[ext_resource type="MidiResource" uid="uid://bn61clf1oa1fy" path="res://Assets/Audio/Music/Hopes and Dreams.mid" id="9_o5yvi"]
-[ext_resource type="Script" uid="uid://bf6nimabwdao0" path="res://Scenes/midi_handler.gd" id="10_o5yvi"]
-[ext_resource type="AudioStream" uid="uid://bdk2xw3t8hyvw" path="res://Assets/Audio/Music/Hopes and Dreams.mp3" id="11_rku1e"]
+[ext_resource type="AudioStream" uid="uid://brqs0s5c0m1on" path="res://Assets/Audio/SFX/snd_guitarpickup1.wav" id="7_rfjv2"]
+[ext_resource type="AudioStream" uid="uid://uftwvhdq0ifd" path="res://Assets/Audio/SFX/snd_guitarpickup2.wav" id="8_1phco"]
+[ext_resource type="Script" uid="uid://bf6nimabwdao0" path="res://Scripts/midi_handler.gd" id="10_o5yvi"]
+[ext_resource type="MidiResource" uid="uid://bpdw7caba4ybo" path="res://Assets/Audio/Music/ASGORE.mid" id="11_rfjv2"]
+[ext_resource type="AudioStream" uid="uid://di3i3ccgw5ax0" path="res://Assets/Audio/Music/ASGORE.mp3" id="13_1phco"]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=2015450930]
 position = Vector2(-1, 70)
 
-[node name="Background" type="Node" parent="."]
+[node name="Background" type="Node" parent="." unique_id=2009318148]
 
-[node name="BG" parent="Background" instance=ExtResource("1_ebmjs")]
+[node name="BG" parent="Background" unique_id=547414789 instance=ExtResource("1_ebmjs")]
 z_index = -2
 position = Vector2(319.5, 397.5)
 
-[node name="BG Extension" type="Sprite2D" parent="Background"]
+[node name="BG Extension" type="Sprite2D" parent="Background" unique_id=1840339177]
 z_index = -3
 position = Vector2(316.75, 89.25)
 scale = Vector2(9.51408, 5.2027)
 texture = ExtResource("2_v158k")
 
-[node name="Notes Cover" type="Sprite2D" parent="Background/BG Extension"]
+[node name="Notes Cover" type="Sprite2D" parent="Background/BG Extension" unique_id=1388918720]
 visibility_layer = 16
 z_index = -3
 position = Vector2(-2.07587, -26.9572)
 scale = Vector2(1.10141, 0.642907)
 texture = ExtResource("2_v158k")
 
-[node name="Fun Gang" type="Node" parent="."]
+[node name="Fun Gang" type="Node" parent="." unique_id=1421185346]
 
-[node name="Kris" parent="Fun Gang" instance=ExtResource("2_wrm1d")]
+[node name="Kris" parent="Fun Gang" unique_id=76559697 instance=ExtResource("2_wrm1d")]
 visibility_layer = 2
 z_index = 1
 position = Vector2(319.5, 461.5)
 
-[node name="Susie" parent="Fun Gang" instance=ExtResource("3_3dryh")]
+[node name="Susie" parent="Fun Gang" unique_id=2057498117 instance=ExtResource("3_3dryh")]
 visibility_layer = 2
 z_index = 1
 position = Vector2(159.5, 421.5)
 
-[node name="Ralsei" parent="Fun Gang" instance=ExtResource("4_3dryh")]
+[node name="Ralsei" parent="Fun Gang" unique_id=1868227561 instance=ExtResource("4_3dryh")]
 visibility_layer = 2
 z_index = 1
 position = Vector2(497.5, 421.5)
 
-[node name="RhythmBoard" parent="." instance=ExtResource("5_1l0tm")]
+[node name="RhythmBoard" parent="." unique_id=376557642 instance=ExtResource("5_1l0tm")]
 z_index = 1
 position = Vector2(321.5, 119)
 
-[node name="Notes" type="Node" parent="."]
+[node name="Left ASP" type="AudioStreamPlayer" parent="RhythmBoard" unique_id=712024532]
+stream = ExtResource("7_rfjv2")
+volume_db = -30.0
 
-[node name="Left Holder" type="Node2D" parent="Notes"]
+[node name="Right ASP" type="AudioStreamPlayer" parent="RhythmBoard" unique_id=775828908]
+stream = ExtResource("8_1phco")
+volume_db = -30.0
+
+[node name="Notes" type="Node" parent="." unique_id=64371696]
+
+[node name="Left Holder" type="Node2D" parent="Notes" unique_id=1909799249]
 visibility_layer = 9
 position = Vector2(292.5, 7.865)
 scale = Vector2(4, 4)
 
-[node name="Right Holder" type="Node2D" parent="Notes"]
+[node name="Right Holder" type="Node2D" parent="Notes" unique_id=337940665]
 visibility_layer = 9
 position = Vector2(348.52, 7.865)
 scale = Vector2(4, 4)
 
-[node name="Left End" type="Node2D" parent="Notes"]
+[node name="Left End" type="Node2D" parent="Notes" unique_id=1336104085]
 visibility_layer = 9
 position = Vector2(292.5, 324.965)
 
-[node name="Right End" type="Node2D" parent="Notes"]
+[node name="Right End" type="Node2D" parent="Notes" unique_id=2116677361]
 visibility_layer = 9
 position = Vector2(348.52, 324.965)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=946995649]
 position = Vector2(320.515, 170)
 
-[node name="Quit Handling" type="Node" parent="."]
+[node name="Quit Handling" type="Node" parent="." unique_id=1372734160]
 
-[node name="QuitLabel" type="Label" parent="Quit Handling"]
+[node name="QuitLabel" type="Label" parent="Quit Handling" unique_id=1261977029]
 visibility_layer = 32
 texture_filter = 1
 offset_left = 8.0
@@ -93,20 +103,20 @@ text = "Quitting..."
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="QuitTimer" type="Timer" parent="Quit Handling"]
+[node name="QuitTimer" type="Timer" parent="Quit Handling" unique_id=141591088]
 wait_time = 3.0
 script = ExtResource("1_i6g32")
 
-[node name="MidiPlayer" type="MidiPlayer" parent="."]
-midi = ExtResource("9_o5yvi")
+[node name="MidiPlayer" type="MidiPlayer" parent="." unique_id=2029256976]
+midi = ExtResource("11_rfjv2")
 script = ExtResource("10_o5yvi")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="MidiPlayer"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="MidiPlayer" unique_id=1902161829]
 position = Vector2(320, 239)
-stream = ExtResource("11_rku1e")
+stream = ExtResource("13_1phco")
 volume_db = 1.266
 
-[node name="Audio Delay" type="Timer" parent="MidiPlayer"]
+[node name="Audio Delay" type="Timer" parent="MidiPlayer" unique_id=1592186862]
 
 [connection signal="timeout" from="Quit Handling/QuitTimer" to="Quit Handling/QuitTimer" method="quit_game"]
 [connection signal="timeout" from="MidiPlayer/Audio Delay" to="MidiPlayer" method="play_audio"]

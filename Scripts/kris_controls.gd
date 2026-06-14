@@ -11,7 +11,7 @@ func _ready() -> void:
 	Engine.max_fps = 30
 	# rhythm_board.visible = false
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# apparently Godot's version of switch-case is match
 	match Global.GAME_STATE:
 		Global.STATES.MENU:

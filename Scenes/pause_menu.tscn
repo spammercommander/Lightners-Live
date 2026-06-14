@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://3yfsthaa7s0p"]
+
+[node name="PauseMenu" type="Node2D" unique_id=1406651886]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=22667465]
+offset_left = -35.0
+offset_top = -24.0
+offset_right = 686.0
+offset_bottom = 511.0
+color = Color(0, 0, 0, 0.4509804)

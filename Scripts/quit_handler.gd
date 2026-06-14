@@ -9,7 +9,7 @@ func _ready():
 	label.modulate.a = transparency.TRANSPARENT
 	label.visible = false
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("escape"):
 		fade_in()
 		timer.start()

@@ -4,8 +4,10 @@ extends Sprite2D
 @onready var r_sprite: AnimatedSprite2D = $"Right Hit"
 @onready var r_area: CollisionShape2D = $"Right Hit/R Area/R HitBox"
 @onready var l_area: CollisionShape2D = $"Left Hit/L Area/L HitBox"
-@onready var r_fx: AnimatedSprite2D = $"Right Hit/Hit FX"
-@onready var l_fx: AnimatedSprite2D = $"Left Hit/Hit FX"
+@onready var r_fx: AnimatedSprite2D = $"Right Hit/Miss FX"
+@onready var l_fx: AnimatedSprite2D = $"Left Hit/Miss FX"
+@onready var left_asp: AudioStreamPlayer = $"Left ASP"
+@onready var right_asp: AudioStreamPlayer = $"Right ASP"
 
 func _ready():
 	r_area.disabled = true
@@ -18,10 +20,12 @@ func _process(_delta: float) -> void:
 func input_handler():
 	if Input.is_action_just_pressed("left note"):
 		l_sprite.play("hit")
+		left_asp.play()
 		if l_area.disabled:
 			l_area.disabled = false
 	if Input.is_action_just_pressed("right note"):
 		r_sprite.play("hit")
+		right_asp.play()
 		if r_area.disabled:
 			r_area.disabled = false
 	

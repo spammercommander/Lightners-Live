@@ -12,8 +12,7 @@ func _ready():
 		end_position = left_end.position
 	else:
 		end_position = right_end.position
-	speed = (end_position - parent_position) / Global.AUDIO_DELAY
-	direction = (end_position - parent_position).normalized()
+	speed = (end_position.y - parent_position.y) / Global.AUDIO_DELAY
 	
 func _process(delta: float) -> void:
-	self.position += direction * speed * delta
+	self.position.y += speed * delta

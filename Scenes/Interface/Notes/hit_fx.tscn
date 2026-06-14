@@ -139,5 +139,5 @@ animations = [{
 
 [node name="Hit FX" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_cnuwc")
-animation = &"perfect"
+animation = &"almost"
 autoplay = "idle"

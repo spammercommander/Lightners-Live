@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://dws1o24c7b1nv"]
+[gd_scene load_steps=15 format=3 uid="uid://dws1o24c7b1nv"]
 
 [ext_resource type="Texture2D" uid="uid://cvqfxni7slbke" path="res://Assets/Sprites & Textures/UI/RhythmBoard.png" id="1_fly2t"]
 [ext_resource type="Script" uid="uid://d0chgrdv86jj3" path="res://Scripts/rhythm_controls.gd" id="2_c4y48"]
 [ext_resource type="Texture2D" uid="uid://qrdtsa2mdm0f" path="res://Assets/Sprites & Textures/UI/Notes.png" id="3_11rrp"]
-[ext_resource type="PackedScene" uid="uid://dlt25skeah17m" path="res://Scenes/Interface/Notes/hit_fx.tscn" id="4_11rrp"]
+[ext_resource type="PackedScene" uid="uid://dlt25skeah17m" path="res://Scenes/Interface/hit_fx.tscn" id="4_11rrp"]
 [ext_resource type="Script" uid="uid://c331fekfl1w6r" path="res://Scripts/hit_note.gd" id="4_shkxh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_shkxh"]
@@ -36,19 +36,19 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0g5n1"]
 size = Vector2(13, 2)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2knal"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhcle"]
 atlas = ExtResource("3_11rrp")
-region = Rect2(13, 16, 13, 4)
+region = Rect2(13, 12, 13, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0g5n1"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0bix"]
 atlas = ExtResource("3_11rrp")
-region = Rect2(0, 16, 13, 4)
+region = Rect2(0, 12, 13, 4)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vrb88"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2knal")
+"texture": SubResource("AtlasTexture_mhcle")
 }],
 "loop": false,
 "name": &"hit",
@@ -56,7 +56,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0g5n1")
+"texture": SubResource("AtlasTexture_s0bix")
 }],
 "loop": false,
 "name": &"idle",
@@ -69,7 +69,7 @@ size = Vector2(13, 2)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c4y48"]
 size = Vector2(30, 2.25)
 
-[node name="RhythmBoard" type="Sprite2D" unique_id=72300374]
+[node name="RhythmBoard" type="Sprite2D"]
 visibility_layer = 4
 position = Vector2(0, -178)
 scale = Vector2(4, 4)
@@ -77,7 +77,7 @@ texture = ExtResource("1_fly2t")
 hframes = 2
 script = ExtResource("2_c4y48")
 
-[node name="Right Hit" type="AnimatedSprite2D" parent="." unique_id=314737577]
+[node name="Right Hit" type="AnimatedSprite2D" parent="."]
 visibility_layer = 16
 z_index = 1
 position = Vector2(7, 34)
@@ -86,60 +86,50 @@ animation = &"hit"
 autoplay = "idle"
 script = ExtResource("4_shkxh")
 
-[node name="R Area" type="Area2D" parent="Right Hit" unique_id=651872976]
+[node name="R Area" type="Area2D" parent="Right Hit"]
 
-[node name="R HitBox" type="CollisionShape2D" parent="Right Hit/R Area" unique_id=1209931670]
+[node name="R HitBox" type="CollisionShape2D" parent="Right Hit/R Area"]
 shape = SubResource("RectangleShape2D_0g5n1")
 
-[node name="Miss FX" parent="Right Hit" unique_id=1943979247 instance=ExtResource("4_11rrp")]
+[node name="Hit FX" parent="Right Hit" instance=ExtResource("4_11rrp")]
 visibility_layer = 4
 z_index = -2
 position = Vector2(-4.76837e-07, -21.5)
 scale = Vector2(1.56, 1.56)
 
-[node name="Hit FX" parent="Right Hit" unique_id=1329056755 instance=ExtResource("4_11rrp")]
-visibility_layer = 4
-z_index = -2
-position = Vector2(0, -31.175)
-scale = Vector2(1.56, 1.56)
-
-[node name="Left Hit" type="AnimatedSprite2D" parent="." unique_id=1614717255]
+[node name="Left Hit" type="AnimatedSprite2D" parent="."]
 visibility_layer = 16
 z_index = 1
 position = Vector2(-7, 34)
 sprite_frames = SubResource("SpriteFrames_vrb88")
-animation = &"idle"
+animation = &"hit"
 autoplay = "idle"
 script = ExtResource("4_shkxh")
 
-[node name="L Area" type="Area2D" parent="Left Hit" unique_id=1277346173]
+[node name="L Area" type="Area2D" parent="Left Hit"]
 
-[node name="L HitBox" type="CollisionShape2D" parent="Left Hit/L Area" unique_id=316881727]
+[node name="L HitBox" type="CollisionShape2D" parent="Left Hit/L Area"]
 shape = SubResource("RectangleShape2D_naoqe")
 
-[node name="Miss FX" parent="Left Hit" unique_id=105966136 instance=ExtResource("4_11rrp")]
+[node name="Hit FX" parent="Left Hit" instance=ExtResource("4_11rrp")]
 visibility_layer = 4
 z_index = -2
 position = Vector2(9.53674e-07, -21.5)
 scale = Vector2(1.56, 1.56)
 
-[node name="Hit FX" parent="Left Hit" unique_id=1994504454 instance=ExtResource("4_11rrp")]
-visibility_layer = 4
-z_index = -2
-position = Vector2(0, -31.175)
-scale = Vector2(1.56, 1.56)
+[node name="Miss Area" type="Area2D" parent="."]
 
-[node name="Miss Area" type="Area2D" parent="." unique_id=1106133597]
-
-[node name="Miss HitBox" type="CollisionShape2D" parent="Miss Area" unique_id=490404220]
+[node name="Miss HitBox" type="CollisionShape2D" parent="Miss Area"]
 position = Vector2(0, 43.375)
 shape = SubResource("RectangleShape2D_c4y48")
 
-[node name="Frame" type="Sprite2D" parent="." unique_id=170751649]
+[node name="Frame" type="Sprite2D" parent="."]
 visibility_layer = 16
 z_index = -1
 texture = ExtResource("1_fly2t")
 hframes = 2
 frame = 1
 
+[connection signal="area_entered" from="Right Hit/R Area" to="Right Hit" method="hit_area"]
+[connection signal="area_entered" from="Left Hit/L Area" to="Left Hit" method="hit_area"]
 [connection signal="area_entered" from="Miss Area" to="." method="miss_area"]
