@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://pkx5re5m4edk" path="res://Scenes/Characters/susie.tscn" id="3_3dryh"]
 [ext_resource type="PackedScene" uid="uid://bw3p0ot44s3v2" path="res://Scenes/Characters/ralsei.tscn" id="4_3dryh"]
 [ext_resource type="PackedScene" uid="uid://dws1o24c7b1nv" path="res://Scenes/Interface/rhythm_board.tscn" id="5_1l0tm"]
-[ext_resource type="FontFile" uid="uid://gee05d7cqp85" path="res://Assets/Fonts/undertale-deltarune-text-font-extended.otf" id="5_wowpa"]
 [ext_resource type="AudioStream" uid="uid://brqs0s5c0m1on" path="res://Assets/Audio/SFX/snd_guitarpickup1.wav" id="7_rfjv2"]
 [ext_resource type="AudioStream" uid="uid://uftwvhdq0ifd" path="res://Assets/Audio/SFX/snd_guitarpickup2.wav" id="8_1phco"]
+[ext_resource type="Theme" uid="uid://jgxihx7s5hdb" path="res://Assets/Themes/ui_text_theme.tres" id="9_rfjv2"]
 [ext_resource type="Script" uid="uid://bf6nimabwdao0" path="res://Scripts/midi_handler.gd" id="10_o5yvi"]
 [ext_resource type="MidiResource" uid="uid://bpdw7caba4ybo" path="res://Assets/Audio/Music/ASGORE.mid" id="11_rfjv2"]
 [ext_resource type="AudioStream" uid="uid://di3i3ccgw5ax0" path="res://Assets/Audio/Music/ASGORE.mp3" id="13_1phco"]
@@ -65,6 +65,21 @@ volume_db = -30.0
 stream = ExtResource("8_1phco")
 volume_db = -30.0
 
+[node name="ScoreLabel" type="Label" parent="." unique_id=1790563519]
+visibility_layer = 32
+z_index = 10
+texture_filter = 1
+offset_left = 457.0
+offset_top = -67.0
+offset_right = 635.0
+offset_bottom = -19.0
+theme = ExtResource("9_rfjv2")
+theme_type_variation = &"HeaderMedium"
+text = "SCORE 0"
+horizontal_alignment = 2
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Notes" type="Node" parent="." unique_id=64371696]
 
 [node name="Left Holder" type="Node2D" parent="Notes" unique_id=1909799249]
@@ -97,8 +112,8 @@ offset_left = 8.0
 offset_top = -2.0
 offset_right = 191.0
 offset_bottom = 49.0
-theme_override_fonts/font = ExtResource("5_wowpa")
-theme_override_font_sizes/font_size = 25
+theme = ExtResource("9_rfjv2")
+theme_type_variation = &"NormalLabel"
 text = "Quitting..."
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true

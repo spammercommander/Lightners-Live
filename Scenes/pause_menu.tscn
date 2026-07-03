@@ -2,9 +2,25 @@
 
 [node name="PauseMenu" type="Node2D" unique_id=1406651886]
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=22667465]
-offset_left = -35.0
-offset_top = -24.0
-offset_right = 686.0
-offset_bottom = 511.0
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1969435407]
+anchor_mode = 0
+
+[node name="BG" type="ColorRect" parent="Camera2D" unique_id=22667465]
+offset_right = 640.0
+offset_bottom = 480.0
 color = Color(0, 0, 0, 0.4509804)
+
+[node name="Label" type="Label" parent="Camera2D/BG" unique_id=1434475536]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 13.0
+offset_right = 88.0
+offset_bottom = 61.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLabel"
+text = "GAME PAUSED"
+horizontal_alignment = 1
+vertical_alignment = 1

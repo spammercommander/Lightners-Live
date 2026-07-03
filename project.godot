@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Lightners Live"
 run/main_scene="uid://d3fw388vlphjy"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -33,6 +33,10 @@ window/stretch/scale_mode="integer"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_midi/plugin.cfg")
+
+[gui]
+
+theme/custom="res://Assets/Themes/ui_text_theme.tres"
 
 [input]
 

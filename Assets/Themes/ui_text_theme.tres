@@ -1,0 +1,59 @@
+[gd_resource type="Theme" format=3 uid="uid://jgxihx7s5hdb"]
+
+[ext_resource type="FontFile" uid="uid://gee05d7cqp85" path="res://Assets/Fonts/undertale-deltarune-text-font-extended.otf" id="1_font"]
+
+[resource]
+Button/font_sizes/font_size = 24
+Button/fonts/font = ExtResource("1_font")
+CheckBox/font_sizes/font_size = 24
+CheckBox/fonts/font = ExtResource("1_font")
+CheckButton/font_sizes/font_size = 24
+CheckButton/fonts/font = ExtResource("1_font")
+HeaderButton/base_type = &"Button"
+HeaderButton/font_sizes/font_size = 32
+HeaderButton/fonts/font = ExtResource("1_font")
+HeaderLabel/base_type = &"Label"
+HeaderLabel/font_sizes/font_size = 32
+HeaderLabel/fonts/font = ExtResource("1_font")
+ItemList/font_sizes/font_size = 24
+ItemList/fonts/font = ExtResource("1_font")
+Label/font_sizes/font_size = 24
+Label/fonts/font = ExtResource("1_font")
+LineEdit/font_sizes/font_size = 24
+LineEdit/fonts/font = ExtResource("1_font")
+LinkButton/font_sizes/font_size = 24
+LinkButton/fonts/font = ExtResource("1_font")
+MenuButton/font_sizes/font_size = 24
+MenuButton/fonts/font = ExtResource("1_font")
+NormalButton/base_type = &"Button"
+NormalButton/font_sizes/font_size = 24
+NormalButton/fonts/font = ExtResource("1_font")
+NormalLabel/base_type = &"Label"
+NormalLabel/font_sizes/font_size = 24
+NormalLabel/fonts/font = ExtResource("1_font")
+OptionButton/font_sizes/font_size = 24
+OptionButton/fonts/font = ExtResource("1_font")
+PopupMenu/font_sizes/font_size = 24
+PopupMenu/fonts/font = ExtResource("1_font")
+ProgressBar/font_sizes/font_size = 24
+ProgressBar/fonts/font = ExtResource("1_font")
+RichTextLabel/font_sizes/bold_font_size = 24
+RichTextLabel/font_sizes/bold_italics_font_size = 24
+RichTextLabel/font_sizes/italics_font_size = 24
+RichTextLabel/font_sizes/mono_font_size = 24
+RichTextLabel/font_sizes/normal_font_size = 24
+RichTextLabel/fonts/bold_font = ExtResource("1_font")
+RichTextLabel/fonts/bold_italics_font = ExtResource("1_font")
+RichTextLabel/fonts/italics_font = ExtResource("1_font")
+RichTextLabel/fonts/mono_font = ExtResource("1_font")
+RichTextLabel/fonts/normal_font = ExtResource("1_font")
+SpinBox/font_sizes/font_size = 24
+SpinBox/fonts/font = ExtResource("1_font")
+TabBar/font_sizes/font_size = 24
+TabBar/fonts/font = ExtResource("1_font")
+TextEdit/font_sizes/font_size = 24
+TextEdit/fonts/font = ExtResource("1_font")
+Tree/font_sizes/font_size = 24
+Tree/font_sizes/title_button_font_size = 24
+Tree/fonts/font = ExtResource("1_font")
+Tree/fonts/title_button_font = ExtResource("1_font")

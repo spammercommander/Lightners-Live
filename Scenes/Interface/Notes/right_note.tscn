@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://65j0o6j16uv6" path="res://Scripts/note.gd" id="2_7gd5w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7gd5w"]
-size = Vector2(12, 1)
+size = Vector2(12, 2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1qbgj"]
-size = Vector2(12, 1.5)
+size = Vector2(12, 2)
 
 [node name="Right Note" type="Sprite2D"]
 visibility_layer = 8
@@ -28,7 +28,7 @@ metadata/isRight = true
 shape = SubResource("RectangleShape2D_7gd5w")
 
 [node name="Later Area" type="Area2D" parent="."]
-position = Vector2(0, -1.245)
+position = Vector2(0, -2)
 collision_mask = 0
 input_pickable = false
 metadata/isPerfect = false
@@ -40,7 +40,7 @@ shape = SubResource("RectangleShape2D_1qbgj")
 debug_color = Color(0.803831, 0.379158, 0.468387, 0.42)
 
 [node name="Early Area" type="Area2D" parent="."]
-position = Vector2(0, 1.255)
+position = Vector2(0, 2)
 collision_mask = 0
 input_pickable = false
 metadata/isPerfect = false

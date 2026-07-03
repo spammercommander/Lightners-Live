@@ -39,7 +39,17 @@ func input_handler():
 			r_area.disabled = true
 
 func miss_area(area: Area2D):
-	area.get_parent().queue_free()
+	var note_instance: Node = area.get_parent()
+	if note_instance.get_meta("was_hit", false):
+		return
+	if area.get_meta("isHold", false) and !note_instance.get_meta("is_active_hold", true):
+		note_instance.queue_free()
+		return
+	if area.get_meta("isHold", false):
+		var hold_id: int = note_instance.get_meta("hold_id", 0)
+		Global.fail_hold_chain(hold_id)
+
+	note_instance.queue_free()
 	if area.get_meta("isRight"):
 		r_fx.play("miss")
 	else:
