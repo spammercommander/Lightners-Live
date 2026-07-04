@@ -140,5 +140,25 @@ func instantiate_note(note_res: Resource, location: Node2D) -> Node:
 func get_target_hit_time() -> float:
 	return Time.get_ticks_msec() / 1000.0 + Global.AUDIO_DELAY
 
+func restart_song():
+	if player.has_method("stop"):
+		player.call("stop")
+	asp.stop()
+	audio_delay.stop()
+	clear_spawned_notes()
+	setup_hold_spawning()
+	Global.clear_tap_timing_notes()
+	Global.reset_score()
+	audio_delay.wait_time = Global.AUDIO_START_DELAY
+	audio_delay.start()
+	player.play()
+
+func clear_spawned_notes():
+	for holder in [left_holder, right_holder]:
+		for child in holder.get_children():
+			child.set_process(false)
+			child.queue_free()
+
 func play_audio():
+	asp.stop()
 	asp.play()
