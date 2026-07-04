@@ -106,6 +106,7 @@ func start_hold_note(midi_note: int):
 	var hold_duration := get_next_cached_hold_duration(midi_note)
 	if hold_duration >= Global.LONG_HOLD_ALT_THRESHOLD:
 		Global.mark_long_hold_chain(active_hold_ids[midi_note])
+		Global.activate_long_hold_lane(get_hold_lane(midi_note))
 	hold_spawn_timers[midi_note] = 0.0
 	spawn_hold_note(midi_note)
 
@@ -114,6 +115,8 @@ func stop_hold_note(midi_note: int):
 		return
 
 	mark_long_hold_if_needed(midi_note)
+	if Global.is_long_hold_chain(active_hold_ids[midi_note]):
+		Global.release_long_hold_lane(get_hold_lane(midi_note), Time.get_ticks_msec() / 1000.0)
 	active_hold_notes[midi_note] = false
 	active_hold_ids[midi_note] = 0
 	hold_start_times.erase(midi_note)
@@ -159,6 +162,13 @@ func mark_long_hold_if_needed(midi_note: int):
 	var hold_duration: float = Time.get_ticks_msec() / 1000.0 - hold_start_times[midi_note]
 	if hold_duration >= Global.LONG_HOLD_ALT_THRESHOLD:
 		Global.mark_long_hold_chain(hold_id)
+		Global.activate_long_hold_lane(get_hold_lane(midi_note))
+
+func get_hold_lane(midi_note: int) -> String:
+	if midi_note == RIGHT_HOLD_NOTE:
+		return "right"
+
+	return "left"
 
 func cache_hold_durations():
 	cached_hold_durations.clear()

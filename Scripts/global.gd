@@ -12,7 +12,7 @@ const PERFECT_SCORE := 50
 const GOOD_SCORE := 25
 const HOLD_SCORE_PER_SECOND := 10.0
 const HOLD_SCORE_INTERVAL := 0.08
-const LONG_HOLD_ALT_THRESHOLD := 2.0
+const LONG_HOLD_ALT_THRESHOLD := 1.0
 
 signal score_changed(score: int)
 
@@ -23,6 +23,10 @@ var tap_timing_notes := {
 var failed_hold_ids := {}
 var hold_pieces_by_id := {}
 var long_hold_ids := {}
+var active_long_hold_lanes := {
+	"left": 0.0,
+	"right": 0.0,
+}
 var score := 0.0
 
 func clear_tap_timing_notes():
@@ -31,6 +35,8 @@ func clear_tap_timing_notes():
 	failed_hold_ids.clear()
 	hold_pieces_by_id.clear()
 	long_hold_ids.clear()
+	active_long_hold_lanes["left"] = 0.0
+	active_long_hold_lanes["right"] = 0.0
 
 func reset_score():
 	score = 0.0
@@ -62,6 +68,24 @@ func mark_long_hold_chain(hold_id: int):
 
 func is_long_hold_chain(hold_id: int) -> bool:
 	return long_hold_ids.has(hold_id)
+
+func activate_long_hold_lane(lane: String):
+	if !active_long_hold_lanes.has(lane):
+		return
+
+	active_long_hold_lanes[lane] = INF
+
+func release_long_hold_lane(lane: String, current_time: float):
+	if !active_long_hold_lanes.has(lane):
+		return
+
+	active_long_hold_lanes[lane] = maxf(active_long_hold_lanes[lane], current_time + AUDIO_DELAY)
+
+func is_long_hold_lane_active(lane: String, current_time: float) -> bool:
+	if !active_long_hold_lanes.has(lane):
+		return false
+
+	return current_time <= active_long_hold_lanes[lane]
 
 func fail_hold_chain(hold_id: int):
 	if hold_id <= 0:

@@ -155,25 +155,8 @@ func update_hold_note_state(is_right: bool):
 			remove_hit_note(hold_note)
 
 func has_valid_long_hold_in_lane(is_right: bool) -> bool:
-	var hit_area = r_hit_area if is_right else l_hit_area
-
-	for area in hit_area.get_overlapping_areas():
-		if !is_matching_note_area(area, is_right):
-			continue
-		if !area.get_meta("isHold", false):
-			continue
-
-		var hold_note: Node = area.get_parent()
-		if !hold_note.get_meta("is_active_hold", true):
-			continue
-
-		var hold_id: int = hold_note.get_meta("hold_id", 0)
-		if Global.is_hold_chain_failed(hold_id):
-			continue
-		if Global.is_long_hold_chain(hold_id):
-			return true
-
-	return false
+	var lane := "right" if is_right else "left"
+	return Global.is_long_hold_lane_active(lane, Time.get_ticks_msec() / 1000.0)
 
 func get_best_note_area(hit_area: Area2D, is_right: bool, hold_only: bool) -> Area2D:
 	var fallback_area: Area2D = null
