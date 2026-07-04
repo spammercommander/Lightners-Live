@@ -11,9 +11,10 @@
 [ext_resource type="AudioStream" uid="uid://uftwvhdq0ifd" path="res://Assets/Audio/SFX/snd_guitarpickup2.wav" id="8_1phco"]
 [ext_resource type="Theme" uid="uid://jgxihx7s5hdb" path="res://Assets/Themes/ui_text_theme.tres" id="9_rfjv2"]
 [ext_resource type="Script" uid="uid://bf6nimabwdao0" path="res://Scripts/midi_handler.gd" id="10_o5yvi"]
-[ext_resource type="MidiResource" uid="uid://cmpredemnopwg" path="res://Assets/Audio/Music/Raise Up Your Bat.mid" id="12_1phco"]
-[ext_resource type="AudioStream" uid="uid://6hvpq6jh7bjc" path="res://Assets/Audio/Music/Raise Up Your Bat.mp3" id="14_nb51f"]
+[ext_resource type="MidiResource" uid="uid://cmpredemnopwg" path="res://Assets/Audio/Music/Song Tracks/Raise Up Your Bat/Raise Up Your Bat.mid" id="12_1phco"]
+[ext_resource type="AudioStream" uid="uid://6hvpq6jh7bjc" path="res://Assets/Audio/Music/Song Tracks/Raise Up Your Bat/Raise Up Your Bat.mp3" id="14_nb51f"]
 [ext_resource type="Script" uid="uid://ngyhcuc88562" path="res://Scripts/restart_song_handler.gd" id="14_restart"]
+[ext_resource type="PackedScene" uid="uid://3yfsthaa7s0p" path="res://Scenes/pause_menu.tscn" id="15_nb51f"]
 
 [node name="Game" type="Node2D" unique_id=2015450930]
 position = Vector2(-1, 70)
@@ -151,6 +152,10 @@ stream = ExtResource("14_nb51f")
 volume_db = 1.266
 
 [node name="Audio Delay" type="Timer" parent="MidiPlayer" unique_id=1592186862]
+
+[node name="Menus" type="Node" parent="." unique_id=1998129005]
+
+[node name="PauseMenu" parent="Menus" unique_id=1406651886 instance=ExtResource("15_nb51f")]
 
 [connection signal="timeout" from="Quit Handling/QuitTimer" to="Quit Handling/QuitTimer" method="quit_game"]
 [connection signal="timeout" from="MidiPlayer/Audio Delay" to="MidiPlayer" method="play_audio"]

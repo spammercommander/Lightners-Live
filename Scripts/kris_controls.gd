@@ -14,6 +14,8 @@ extends CharacterBody2D
 @onready var left_asp: AudioStreamPlayer = $"../../RhythmBoard/Left ASP"
 @onready var right_asp: AudioStreamPlayer = $"../../RhythmBoard/Right ASP"
 @onready var score_label: Label = $"../../ScoreLabel"
+@onready var midi_player: Node = $"../../MidiPlayer"
+@onready var pause_menu: Node = $"../../Menus/PauseMenu"
 
 func _ready() -> void:
 	Global.GAME_STATE = Global.STATES.PERFORM
@@ -32,20 +34,15 @@ func setup_rhythm_board():
 
 func _process(_delta: float) -> void:
 	# apparently Godot's version of switch-case is match
-	match Global.GAME_STATE:
-		Global.STATES.PAUSE:
-			pass
-		Global.STATES.SONG_SELECT:
-			pass
-		Global.STATES.PERFORM:
-			perform_input()
-			update_hold_note_state(false)
-			update_hold_note_state(true)
-		_: # error handling
-			push_error("The forbidden state has been achieved")
+	if Global.GAME_STATE == Global.STATES.PERFORM:
+		perform_input()
+		update_hold_note_state(false)
+		update_hold_note_state(true)
 			
 func perform_input() -> void:
 	# non-game controls
+	if Input.is_action_just_released("escape"):
+		pause_game()
 
 	# low/left notes
 	if Input.is_action_just_pressed("left note"):
@@ -65,8 +62,22 @@ func perform_input() -> void:
 	elif Input.is_action_just_released("right note"):
 		r_hit_sprite.play("idle")
 		animated_sprite.play("high_note_up")
-			
-	# misc. inputs
+		
+func pause_game():
+		pause_song()
+		open_pause_menu()
+	
+func pause_song():
+	Global.GAME_STATE = Global.STATES.PAUSE
+	if midi_player != null and midi_player.has_method("pause_song"):
+		midi_player.call("pause_song")
+
+func open_pause_menu():
+	if pause_menu == null:
+		return
+		
+	pause_menu.visible = true
+	pause_menu.set_process(true)
 
 func hit_note(is_right: bool):
 	var lane := "right" if is_right else "left"

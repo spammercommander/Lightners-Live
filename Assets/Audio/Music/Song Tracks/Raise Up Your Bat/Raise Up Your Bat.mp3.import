@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://6hvpq6jh7bjc"
+path="res://.godot/imported/Raise Up Your Bat.mp3-6ce0261c79be854d182de60760e64e2e.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Music/Song Tracks/Raise Up Your Bat/Raise Up Your Bat.mp3"
+dest_files=["res://.godot/imported/Raise Up Your Bat.mp3-6ce0261c79be854d182de60760e64e2e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,14 @@
+[remap]
+
+importer="com.nlaha.godotmidi"
+type="MidiResource"
+uid="uid://bpdw7caba4ybo"
+path="res://.godot/imported/ASGORE.mid-7f76308ea5473b69eee914d5be9e850a.res"
+
+[deps]
+
+source_file="res://Assets/Audio/Music/Song Tracks/ASGORE/ASGORE.mid"
+dest_files=["res://.godot/imported/ASGORE.mid-7f76308ea5473b69eee914d5be9e850a.res"]
+
+[params]
+

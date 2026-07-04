@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://di3i3ccgw5ax0"
+path="res://.godot/imported/ASGORE.mp3-5b9bad7a0ca12cb02d647f454b13ecce.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Music/Song Tracks/ASGORE/ASGORE.mp3"
+dest_files=["res://.godot/imported/ASGORE.mp3-5b9bad7a0ca12cb02d647f454b13ecce.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

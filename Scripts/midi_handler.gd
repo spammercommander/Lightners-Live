@@ -19,13 +19,22 @@ const HOLD_SPAWN_INTERVAL := 0.08
 @onready var player: MidiPlayer = $"."
 @onready var asp: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var audio_delay: Timer = $"Audio Delay"
+@onready var pause_menu: Node = $"../Menus/PauseMenu"
 
 var active_hold_notes := {}
 var hold_spawn_timers := {}
 var active_hold_ids := {}
 var next_hold_id := 1
+var paused_midi_time := 0.0
 
 func _ready():
+	if pause_menu != null:
+		pause_menu.visible = false
+		pause_menu.set_process(false)
+		var pause_music := pause_menu.get_node_or_null("AudioStreamPlayer2D")
+		if pause_music != null:
+			pause_music.stop()
+	
 	setup_hold_spawning()
 	Global.clear_tap_timing_notes()
 	Global.reset_score()
@@ -162,3 +171,22 @@ func clear_spawned_notes():
 func play_audio():
 	asp.stop()
 	asp.play()
+
+func pause_song():
+	paused_midi_time = get_current_time() if has_method("get_current_time") else 0.0
+	asp.stream_paused = true
+	set_process(false)
+	if has_method("pause"):
+		call("pause")
+	elif has_method("stop"):
+		call("stop")
+
+func resume_song():
+	if has_method("set_current_time"):
+		call("set_current_time", paused_midi_time)
+	elif has_method("seek"):
+		call("seek", paused_midi_time)
+	if has_method("play"):
+		call("play")
+	asp.stream_paused = false
+	set_process(true)

@@ -1,0 +1,14 @@
+[remap]
+
+importer="com.nlaha.godotmidi"
+type="MidiResource"
+uid="uid://cmpredemnopwg"
+path="res://.godot/imported/Raise Up Your Bat.mid-9243515f3b174ff63254d0166975ca9d.res"
+
+[deps]
+
+source_file="res://Assets/Audio/Music/Song Tracks/Raise Up Your Bat/Raise Up Your Bat.mid"
+dest_files=["res://.godot/imported/Raise Up Your Bat.mid-9243515f3b174ff63254d0166975ca9d.res"]
+
+[params]
+
