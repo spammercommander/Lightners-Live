@@ -24,9 +24,12 @@ var active_hold_notes := {}
 var hold_spawn_timers := {}
 var active_hold_ids := {}
 var hold_start_times := {}
+var cached_hold_durations := {}
+var hold_duration_indices := {}
 var next_hold_id := 1
 
 func _ready():
+	cache_hold_durations()
 	setup_hold_spawning()
 	Global.clear_tap_timing_notes()
 	Global.reset_score()
@@ -54,6 +57,10 @@ func setup_hold_spawning():
 	active_hold_ids[LEFT_HOLD_NOTE] = 0
 	active_hold_ids[RIGHT_HOLD_NOTE] = 0
 	hold_start_times.clear()
+
+	hold_duration_indices.clear()
+	hold_duration_indices[LEFT_HOLD_NOTE] = 0
+	hold_duration_indices[RIGHT_HOLD_NOTE] = 0
 	next_hold_id = 1
 
 func note_callback(event, _track):
@@ -96,6 +103,9 @@ func start_hold_note(midi_note: int):
 	active_hold_ids[midi_note] = next_hold_id
 	next_hold_id += 1
 	hold_start_times[midi_note] = Time.get_ticks_msec() / 1000.0
+	var hold_duration := get_next_cached_hold_duration(midi_note)
+	if hold_duration >= Global.LONG_HOLD_ALT_THRESHOLD:
+		Global.mark_long_hold_chain(active_hold_ids[midi_note])
 	hold_spawn_timers[midi_note] = 0.0
 	spawn_hold_note(midi_note)
 
@@ -149,6 +159,45 @@ func mark_long_hold_if_needed(midi_note: int):
 	var hold_duration: float = Time.get_ticks_msec() / 1000.0 - hold_start_times[midi_note]
 	if hold_duration >= Global.LONG_HOLD_ALT_THRESHOLD:
 		Global.mark_long_hold_chain(hold_id)
+
+func cache_hold_durations():
+	cached_hold_durations.clear()
+	cached_hold_durations[LEFT_HOLD_NOTE] = []
+	cached_hold_durations[RIGHT_HOLD_NOTE] = []
+
+	var open_hold_starts := {}
+	open_hold_starts[LEFT_HOLD_NOTE] = []
+	open_hold_starts[RIGHT_HOLD_NOTE] = []
+
+	if midi == null:
+		return
+
+	for track in midi.tracks:
+		var events: Array = track.get("events", [])
+		for event in events:
+			if !event.has("note") or !event.has("time"):
+				continue
+
+			var midi_note: int = event["note"]
+			if !cached_hold_durations.has(midi_note):
+				continue
+
+			var event_time: float = event["time"]
+			if is_note_on(event):
+				open_hold_starts[midi_note].append(event_time)
+			elif is_note_off(event) and !open_hold_starts[midi_note].is_empty():
+				var start_time: float = open_hold_starts[midi_note].pop_back()
+				cached_hold_durations[midi_note].append(maxf(event_time - start_time, 0.0))
+
+func get_next_cached_hold_duration(midi_note: int) -> float:
+	var durations: Array = cached_hold_durations.get(midi_note, [])
+	var duration_index: int = hold_duration_indices.get(midi_note, 0)
+	hold_duration_indices[midi_note] = duration_index + 1
+
+	if duration_index >= durations.size():
+		return 0.0
+
+	return durations[duration_index]
 
 func instantiate_note(note_res: Resource, location: Node2D) -> Node:
 	var instance = note_res.instantiate()
