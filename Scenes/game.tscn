@@ -11,8 +11,9 @@
 [ext_resource type="AudioStream" uid="uid://uftwvhdq0ifd" path="res://Assets/Audio/SFX/snd_guitarpickup2.wav" id="8_1phco"]
 [ext_resource type="Theme" uid="uid://jgxihx7s5hdb" path="res://Assets/Themes/ui_text_theme.tres" id="9_rfjv2"]
 [ext_resource type="Script" uid="uid://bf6nimabwdao0" path="res://Scripts/midi_handler.gd" id="10_o5yvi"]
-[ext_resource type="MidiResource" uid="uid://bpdw7caba4ybo" path="res://Assets/Audio/Music/ASGORE.mid" id="11_rfjv2"]
-[ext_resource type="AudioStream" uid="uid://di3i3ccgw5ax0" path="res://Assets/Audio/Music/ASGORE.mp3" id="13_1phco"]
+[ext_resource type="MidiResource" uid="uid://cmpredemnopwg" path="res://Assets/Audio/Music/Raise Up Your Bat.mid" id="12_1phco"]
+[ext_resource type="AudioStream" uid="uid://6hvpq6jh7bjc" path="res://Assets/Audio/Music/Raise Up Your Bat.mp3" id="14_nb51f"]
+[ext_resource type="Script" uid="uid://ngyhcuc88562" path="res://Scripts/restart_song_handler.gd" id="14_restart"]
 
 [node name="Game" type="Node2D" unique_id=2015450930]
 position = Vector2(-1, 70)
@@ -80,6 +81,24 @@ horizontal_alignment = 2
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="RestartSongHandler" type="Node2D" parent="." unique_id=1701205971]
+visibility_layer = 32
+z_index = 10
+position = Vector2(609, -4)
+script = ExtResource("14_restart")
+
+[node name="RestartLabel" type="Label" parent="RestartSongHandler" unique_id=541258156]
+texture_filter = 1
+offset_left = -16.0
+offset_top = -20.0
+offset_right = 16.0
+offset_bottom = 20.0
+theme = ExtResource("9_rfjv2")
+theme_type_variation = &"HeaderMedium"
+text = "R"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Notes" type="Node" parent="." unique_id=64371696]
 
 [node name="Left Holder" type="Node2D" parent="Notes" unique_id=1909799249]
@@ -123,12 +142,12 @@ wait_time = 3.0
 script = ExtResource("1_i6g32")
 
 [node name="MidiPlayer" type="MidiPlayer" parent="." unique_id=2029256976]
-midi = ExtResource("11_rfjv2")
+midi = ExtResource("12_1phco")
 script = ExtResource("10_o5yvi")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="MidiPlayer" unique_id=1902161829]
 position = Vector2(320, 239)
-stream = ExtResource("13_1phco")
+stream = ExtResource("14_nb51f")
 volume_db = 1.266
 
 [node name="Audio Delay" type="Timer" parent="MidiPlayer" unique_id=1592186862]
