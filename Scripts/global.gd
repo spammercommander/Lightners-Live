@@ -1,7 +1,7 @@
 extends Node
 
 var GAME_STATE: int # determine current state of the game
-enum STATES {MENU, SONG_SELECT, PERFORM} # values for GAME_STATE
+enum STATES {PAUSE, SONG_SELECT, PERFORM} # values for GAME_STATE
 var IS_ALT_NOTE: bool 
 var AUDIO_DELAY: float = 5.0
 var AUDIO_START_DELAY: float = 1.1
@@ -12,6 +12,7 @@ const PERFECT_SCORE := 50
 const GOOD_SCORE := 25
 const HOLD_SCORE_PER_SECOND := 10.0
 const HOLD_SCORE_INTERVAL := 0.08
+const LONG_HOLD_ALT_THRESHOLD := 2.0
 
 signal score_changed(score: int)
 
@@ -21,6 +22,7 @@ var tap_timing_notes := {
 }
 var failed_hold_ids := {}
 var hold_pieces_by_id := {}
+var long_hold_ids := {}
 var score := 0.0
 
 func clear_tap_timing_notes():
@@ -28,6 +30,7 @@ func clear_tap_timing_notes():
 	tap_timing_notes["right"].clear()
 	failed_hold_ids.clear()
 	hold_pieces_by_id.clear()
+	long_hold_ids.clear()
 
 func reset_score():
 	score = 0.0
@@ -50,6 +53,15 @@ func register_hold_piece(hold_id: int, hold_piece: Node):
 
 	if is_hold_chain_failed(hold_id) and hold_piece.has_method("deactivate_hold"):
 		hold_piece.deactivate_hold()
+
+func mark_long_hold_chain(hold_id: int):
+	if hold_id <= 0:
+		return
+
+	long_hold_ids[hold_id] = true
+
+func is_long_hold_chain(hold_id: int) -> bool:
+	return long_hold_ids.has(hold_id)
 
 func fail_hold_chain(hold_id: int):
 	if hold_id <= 0:

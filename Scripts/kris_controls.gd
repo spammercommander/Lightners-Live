@@ -15,6 +15,11 @@ extends CharacterBody2D
 @onready var right_asp: AudioStreamPlayer = $"../../RhythmBoard/Right ASP"
 @onready var score_label: Label = $"../../ScoreLabel"
 
+var long_hold_input_lanes := {
+	"left": false,
+	"right": false,
+}
+
 func _ready() -> void:
 	Global.GAME_STATE = Global.STATES.PERFORM
 	Global.IS_ALT_NOTE = false
@@ -33,7 +38,7 @@ func setup_rhythm_board():
 func _process(_delta: float) -> void:
 	# apparently Godot's version of switch-case is match
 	match Global.GAME_STATE:
-		Global.STATES.MENU:
+		Global.STATES.PAUSE:
 			pass
 		Global.STATES.SONG_SELECT:
 			pass
@@ -45,36 +50,46 @@ func _process(_delta: float) -> void:
 			push_error("The forbidden state has been achieved")
 			
 func perform_input() -> void:
+	# non-game controls
+
 	# low/left notes
 	if Input.is_action_just_pressed("left note"):
+		var use_alt_animation: bool = has_valid_long_hold_in_lane(false)
+		long_hold_input_lanes["left"] = use_alt_animation
 		l_hit_sprite.play("hit")
 		left_asp.play()
-		if Global.IS_ALT_NOTE:
+		if use_alt_animation:
 			animated_sprite.play("alt_note_down")
 		else:
 			animated_sprite.play("low_note_down")
 		hit_note(false)
 	elif Input.is_action_just_released("left note"):
+		var use_alt_animation: bool = long_hold_input_lanes["left"] or has_valid_long_hold_in_lane(false)
 		l_hit_sprite.play("idle")
-		if Global.IS_ALT_NOTE:
+		if use_alt_animation:
 			animated_sprite.play("alt_note_up")
 		else:
 			animated_sprite.play("low_note_up")
+		long_hold_input_lanes["left"] = false
 	# high/right notes
 	if Input.is_action_just_pressed("right note"):
+		var use_alt_animation: bool = has_valid_long_hold_in_lane(true)
+		long_hold_input_lanes["right"] = use_alt_animation
 		r_hit_sprite.play("hit")
 		right_asp.play()
-		if Global.IS_ALT_NOTE:
+		if use_alt_animation:
 			animated_sprite.play("alt_note_down")
 		else:
 			animated_sprite.play("high_note_down")
 		hit_note(true)
 	elif Input.is_action_just_released("right note"):
+		var use_alt_animation: bool = long_hold_input_lanes["right"] or has_valid_long_hold_in_lane(true)
 		r_hit_sprite.play("idle")
-		if Global.IS_ALT_NOTE:
+		if use_alt_animation:
 			animated_sprite.play("alt_note_up")
 		else:
 			animated_sprite.play("high_note_up")
+		long_hold_input_lanes["right"] = false
 			
 	# misc. inputs
 
@@ -138,6 +153,27 @@ func update_hold_note_state(is_right: bool):
 			play_hit_judgment(is_right, "perfect", false)
 			Global.add_score(Global.HOLD_SCORE_PER_SECOND * Global.HOLD_SCORE_INTERVAL)
 			remove_hit_note(hold_note)
+
+func has_valid_long_hold_in_lane(is_right: bool) -> bool:
+	var hit_area = r_hit_area if is_right else l_hit_area
+
+	for area in hit_area.get_overlapping_areas():
+		if !is_matching_note_area(area, is_right):
+			continue
+		if !area.get_meta("isHold", false):
+			continue
+
+		var hold_note: Node = area.get_parent()
+		if !hold_note.get_meta("is_active_hold", true):
+			continue
+
+		var hold_id: int = hold_note.get_meta("hold_id", 0)
+		if Global.is_hold_chain_failed(hold_id):
+			continue
+		if Global.is_long_hold_chain(hold_id):
+			return true
+
+	return false
 
 func get_best_note_area(hit_area: Area2D, is_right: bool, hold_only: bool) -> Area2D:
 	var fallback_area: Area2D = null

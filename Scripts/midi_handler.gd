@@ -23,6 +23,7 @@ const HOLD_SPAWN_INTERVAL := 0.08
 var active_hold_notes := {}
 var hold_spawn_timers := {}
 var active_hold_ids := {}
+var hold_start_times := {}
 var next_hold_id := 1
 
 func _ready():
@@ -52,6 +53,7 @@ func setup_hold_spawning():
 	active_hold_ids.clear()
 	active_hold_ids[LEFT_HOLD_NOTE] = 0
 	active_hold_ids[RIGHT_HOLD_NOTE] = 0
+	hold_start_times.clear()
 	next_hold_id = 1
 
 func note_callback(event, _track):
@@ -93,6 +95,7 @@ func start_hold_note(midi_note: int):
 	active_hold_notes[midi_note] = true
 	active_hold_ids[midi_note] = next_hold_id
 	next_hold_id += 1
+	hold_start_times[midi_note] = Time.get_ticks_msec() / 1000.0
 	hold_spawn_timers[midi_note] = 0.0
 	spawn_hold_note(midi_note)
 
@@ -100,8 +103,10 @@ func stop_hold_note(midi_note: int):
 	if !active_hold_notes.has(midi_note):
 		return
 
+	mark_long_hold_if_needed(midi_note)
 	active_hold_notes[midi_note] = false
 	active_hold_ids[midi_note] = 0
+	hold_start_times.erase(midi_note)
 	hold_spawn_timers[midi_note] = 0.0
 
 func spawn_active_hold_notes(delta: float):
@@ -109,6 +114,7 @@ func spawn_active_hold_notes(delta: float):
 		if !active_hold_notes[midi_note]:
 			continue
 
+		mark_long_hold_if_needed(midi_note)
 		hold_spawn_timers[midi_note] += delta
 		if hold_spawn_timers[midi_note] < HOLD_SPAWN_INTERVAL:
 			continue
@@ -130,7 +136,19 @@ func spawn_hold_note(midi_note: int):
 
 	var hold_id: int = active_hold_ids[midi_note]
 	hold_instance.set_meta("hold_id", hold_id)
+	hold_instance.set_meta("is_long_hold_chain", Global.is_long_hold_chain(hold_id))
 	Global.register_hold_piece(hold_id, hold_instance)
+
+func mark_long_hold_if_needed(midi_note: int):
+	var hold_id: int = active_hold_ids.get(midi_note, 0)
+	if hold_id <= 0 or Global.is_long_hold_chain(hold_id):
+		return
+	if !hold_start_times.has(midi_note):
+		return
+
+	var hold_duration: float = Time.get_ticks_msec() / 1000.0 - hold_start_times[midi_note]
+	if hold_duration >= Global.LONG_HOLD_ALT_THRESHOLD:
+		Global.mark_long_hold_chain(hold_id)
 
 func instantiate_note(note_res: Resource, location: Node2D) -> Node:
 	var instance = note_res.instantiate()
