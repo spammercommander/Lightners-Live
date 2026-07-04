@@ -200,6 +200,8 @@ func remove_hit_note(note_instance: Node):
 		return
 
 	note_instance.set_meta("was_hit", true)
+	if note_instance.get_meta("is_timing_managed_tap", false):
+		Global.remove_tap_timing_note_instance(note_instance)
 	disable_note_collisions(note_instance)
 	note_instance.hide()
 	note_instance.set_process(false)
@@ -207,10 +209,10 @@ func remove_hit_note(note_instance: Node):
 
 func disable_note_collisions(node: Node):
 	if node is Area2D:
-		node.set_deferred("monitoring", false)
-		node.set_deferred("monitorable", false)
+		node.monitoring = false
+		node.monitorable = false
 	if node is CollisionShape2D:
-		node.set_deferred("disabled", true)
+		node.disabled = true
 
 	for child in node.get_children():
 		disable_note_collisions(child)

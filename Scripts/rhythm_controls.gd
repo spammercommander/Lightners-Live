@@ -42,6 +42,9 @@ func miss_area(area: Area2D):
 	var note_instance: Node = area.get_parent()
 	if note_instance.get_meta("was_hit", false):
 		return
+	if note_instance.get_meta("is_timing_managed_tap", false):
+		note_instance.set_meta("was_missed", true)
+		Global.remove_tap_timing_note_instance(note_instance)
 	if area.get_meta("isHold", false) and !note_instance.get_meta("is_active_hold", true):
 		note_instance.queue_free()
 		return

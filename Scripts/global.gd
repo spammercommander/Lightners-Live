@@ -79,10 +79,24 @@ func register_tap_timing_note(lane: String, note_instance: Node, target_time: fl
 	if !tap_timing_notes.has(lane):
 		return
 
+	note_instance.set_meta("is_timing_managed_tap", true)
+	note_instance.set_meta("target_time", target_time)
+	note_instance.set_meta("tap_lane", lane)
 	tap_timing_notes[lane].append({
 		"target_time": target_time,
 		"instance": note_instance,
 	})
+
+func remove_tap_timing_note_instance(note_instance: Node):
+	if !is_instance_valid(note_instance):
+		return
+
+	for lane in tap_timing_notes.keys():
+		var lane_notes: Array = tap_timing_notes[lane]
+		for index in range(lane_notes.size() - 1, -1, -1):
+			var tap_note: Dictionary = lane_notes[index]
+			if tap_note.get("instance") == note_instance:
+				lane_notes.remove_at(index)
 
 func consume_tap_timing_note(lane: String, current_time: float) -> Dictionary:
 	if !tap_timing_notes.has(lane):
@@ -94,11 +108,14 @@ func consume_tap_timing_note(lane: String, current_time: float) -> Dictionary:
 		var target_time: float = tap_note["target_time"]
 		var time_diff := current_time - target_time
 		var abs_diff := absf(time_diff)
+		var note_instance = tap_note.get("instance")
+
+		if !is_instance_valid(note_instance) or note_instance.get_meta("was_missed", false):
+			lane_notes.pop_front()
+			continue
 
 		if time_diff > GOOD_WINDOW:
 			lane_notes.pop_front()
-			if is_instance_valid(tap_note["instance"]):
-				tap_note["instance"].queue_free()
 			continue
 
 		if abs_diff <= PERFECT_WINDOW:
