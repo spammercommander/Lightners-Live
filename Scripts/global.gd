@@ -12,7 +12,6 @@ const PERFECT_SCORE := 50
 const GOOD_SCORE := 25
 const HOLD_SCORE_PER_SECOND := 10.0
 const HOLD_SCORE_INTERVAL := 0.08
-const LONG_HOLD_ALT_THRESHOLD := 1.0
 
 signal score_changed(score: int)
 
@@ -22,17 +21,6 @@ var tap_timing_notes := {
 }
 var failed_hold_ids := {}
 var hold_pieces_by_id := {}
-var long_hold_ids := {}
-var active_long_hold_lanes := {
-	"left": {
-		"start_time": INF,
-		"end_time": 0.0,
-	},
-	"right": {
-		"start_time": INF,
-		"end_time": 0.0,
-	},
-}
 var score := 0.0
 
 func clear_tap_timing_notes():
@@ -40,9 +28,6 @@ func clear_tap_timing_notes():
 	tap_timing_notes["right"].clear()
 	failed_hold_ids.clear()
 	hold_pieces_by_id.clear()
-	long_hold_ids.clear()
-	reset_long_hold_lane("left")
-	reset_long_hold_lane("right")
 
 func reset_score():
 	score = 0.0
@@ -65,45 +50,6 @@ func register_hold_piece(hold_id: int, hold_piece: Node):
 
 	if is_hold_chain_failed(hold_id) and hold_piece.has_method("deactivate_hold"):
 		hold_piece.deactivate_hold()
-
-func mark_long_hold_chain(hold_id: int):
-	if hold_id <= 0:
-		return
-
-	long_hold_ids[hold_id] = true
-
-func is_long_hold_chain(hold_id: int) -> bool:
-	return long_hold_ids.has(hold_id)
-
-func activate_long_hold_lane(lane: String, current_time: float):
-	if !active_long_hold_lanes.has(lane):
-		return
-
-	var lane_state: Dictionary = active_long_hold_lanes[lane]
-	var visual_start_time := current_time + AUDIO_DELAY
-	lane_state["start_time"] = minf(lane_state["start_time"], visual_start_time)
-	lane_state["end_time"] = maxf(lane_state["end_time"], visual_start_time)
-
-func release_long_hold_lane(lane: String, current_time: float):
-	if !active_long_hold_lanes.has(lane):
-		return
-
-	var lane_state: Dictionary = active_long_hold_lanes[lane]
-	lane_state["end_time"] = maxf(lane_state["end_time"], current_time + AUDIO_DELAY)
-
-func is_long_hold_lane_active(lane: String, current_time: float) -> bool:
-	if !active_long_hold_lanes.has(lane):
-		return false
-
-	var lane_state: Dictionary = active_long_hold_lanes[lane]
-	return current_time >= lane_state["start_time"] and current_time <= lane_state["end_time"]
-
-func reset_long_hold_lane(lane: String):
-	if !active_long_hold_lanes.has(lane):
-		return
-
-	active_long_hold_lanes[lane]["start_time"] = INF
-	active_long_hold_lanes[lane]["end_time"] = 0.0
 
 func fail_hold_chain(hold_id: int):
 	if hold_id <= 0:

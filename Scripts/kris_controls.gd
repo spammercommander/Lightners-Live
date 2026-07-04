@@ -49,38 +49,22 @@ func perform_input() -> void:
 
 	# low/left notes
 	if Input.is_action_just_pressed("left note"):
-		var use_alt_animation: bool = has_valid_long_hold_in_lane(false)
 		l_hit_sprite.play("hit")
 		left_asp.play()
-		if use_alt_animation:
-			animated_sprite.play("alt_note_down")
-		else:
-			animated_sprite.play("low_note_down")
+		animated_sprite.play("low_note_down")
 		hit_note(false)
 	elif Input.is_action_just_released("left note"):
-		var use_alt_animation: bool = has_valid_long_hold_in_lane(false)
 		l_hit_sprite.play("idle")
-		if use_alt_animation:
-			animated_sprite.play("alt_note_up")
-		else:
-			animated_sprite.play("low_note_up")
+		animated_sprite.play("low_note_up")
 	# high/right notes
 	if Input.is_action_just_pressed("right note"):
-		var use_alt_animation: bool = has_valid_long_hold_in_lane(true)
 		r_hit_sprite.play("hit")
 		right_asp.play()
-		if use_alt_animation:
-			animated_sprite.play("alt_note_down")
-		else:
-			animated_sprite.play("high_note_down")
+		animated_sprite.play("high_note_down")
 		hit_note(true)
 	elif Input.is_action_just_released("right note"):
-		var use_alt_animation: bool = has_valid_long_hold_in_lane(true)
 		r_hit_sprite.play("idle")
-		if use_alt_animation:
-			animated_sprite.play("alt_note_up")
-		else:
-			animated_sprite.play("high_note_up")
+		animated_sprite.play("high_note_up")
 			
 	# misc. inputs
 
@@ -144,10 +128,6 @@ func update_hold_note_state(is_right: bool):
 			play_hit_judgment(is_right, "perfect", false)
 			Global.add_score(Global.HOLD_SCORE_PER_SECOND * Global.HOLD_SCORE_INTERVAL)
 			remove_hit_note(hold_note)
-
-func has_valid_long_hold_in_lane(is_right: bool) -> bool:
-	var lane := "right" if is_right else "left"
-	return Global.is_long_hold_lane_active(lane, Time.get_ticks_msec() / 1000.0)
 
 func get_best_note_area(hit_area: Area2D, is_right: bool, hold_only: bool) -> Area2D:
 	var fallback_area: Area2D = null
