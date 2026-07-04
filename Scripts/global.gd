@@ -27,6 +27,10 @@ var active_long_hold_lanes := {
 	"left": 0.0,
 	"right": 0.0,
 }
+var active_long_hold_lane_counts := {
+	"left": 0,
+	"right": 0,
+}
 var score := 0.0
 
 func clear_tap_timing_notes():
@@ -37,6 +41,8 @@ func clear_tap_timing_notes():
 	long_hold_ids.clear()
 	active_long_hold_lanes["left"] = 0.0
 	active_long_hold_lanes["right"] = 0.0
+	active_long_hold_lane_counts["left"] = 0
+	active_long_hold_lane_counts["right"] = 0
 
 func reset_score():
 	score = 0.0
@@ -73,13 +79,18 @@ func activate_long_hold_lane(lane: String):
 	if !active_long_hold_lanes.has(lane):
 		return
 
+	active_long_hold_lane_counts[lane] += 1
 	active_long_hold_lanes[lane] = INF
 
 func release_long_hold_lane(lane: String, current_time: float):
 	if !active_long_hold_lanes.has(lane):
 		return
 
-	active_long_hold_lanes[lane] = maxf(active_long_hold_lanes[lane], current_time + AUDIO_DELAY)
+	active_long_hold_lane_counts[lane] = maxi(active_long_hold_lane_counts[lane] - 1, 0)
+	if active_long_hold_lane_counts[lane] > 0:
+		return
+
+	active_long_hold_lanes[lane] = current_time + AUDIO_DELAY
 
 func is_long_hold_lane_active(lane: String, current_time: float) -> bool:
 	if !active_long_hold_lanes.has(lane):

@@ -15,11 +15,6 @@ extends CharacterBody2D
 @onready var right_asp: AudioStreamPlayer = $"../../RhythmBoard/Right ASP"
 @onready var score_label: Label = $"../../ScoreLabel"
 
-var long_hold_input_lanes := {
-	"left": false,
-	"right": false,
-}
-
 func _ready() -> void:
 	Global.GAME_STATE = Global.STATES.PERFORM
 	Global.IS_ALT_NOTE = false
@@ -55,7 +50,6 @@ func perform_input() -> void:
 	# low/left notes
 	if Input.is_action_just_pressed("left note"):
 		var use_alt_animation: bool = has_valid_long_hold_in_lane(false)
-		long_hold_input_lanes["left"] = use_alt_animation
 		l_hit_sprite.play("hit")
 		left_asp.play()
 		if use_alt_animation:
@@ -64,17 +58,15 @@ func perform_input() -> void:
 			animated_sprite.play("low_note_down")
 		hit_note(false)
 	elif Input.is_action_just_released("left note"):
-		var use_alt_animation: bool = long_hold_input_lanes["left"] or has_valid_long_hold_in_lane(false)
+		var use_alt_animation: bool = has_valid_long_hold_in_lane(false)
 		l_hit_sprite.play("idle")
 		if use_alt_animation:
 			animated_sprite.play("alt_note_up")
 		else:
 			animated_sprite.play("low_note_up")
-		long_hold_input_lanes["left"] = false
 	# high/right notes
 	if Input.is_action_just_pressed("right note"):
 		var use_alt_animation: bool = has_valid_long_hold_in_lane(true)
-		long_hold_input_lanes["right"] = use_alt_animation
 		r_hit_sprite.play("hit")
 		right_asp.play()
 		if use_alt_animation:
@@ -83,13 +75,12 @@ func perform_input() -> void:
 			animated_sprite.play("high_note_down")
 		hit_note(true)
 	elif Input.is_action_just_released("right note"):
-		var use_alt_animation: bool = long_hold_input_lanes["right"] or has_valid_long_hold_in_lane(true)
+		var use_alt_animation: bool = has_valid_long_hold_in_lane(true)
 		r_hit_sprite.play("idle")
 		if use_alt_animation:
 			animated_sprite.play("alt_note_up")
 		else:
 			animated_sprite.play("high_note_up")
-		long_hold_input_lanes["right"] = false
 			
 	# misc. inputs
 
