@@ -6,37 +6,26 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   export_game:
     runs-on: ubuntu-latest
     name: Export Game
+    # This runs the build inside a container that already has Godot 3.5.3 ready to go
+    container:
+      image: barichello/godot-ci:3.5.3
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Install Godot Headless & Setup Templates
-        run: |
-          # Download and install Godot 3.5.3 Headless
-          wget https://github.com
-          unzip Godot_v3.5.3-stable_linux_headless.64.zip
-          mv Godot_v3.5.3-stable_linux_headless.64 /usr/local/bin/godot
-          
-          # Force structure the export requirements manually
-          mkdir -p ~/.local/share/godot/templates/3.5.3.stable
-          wget https://github.com
-          unzip Godot_v3.5.3-stable_export_templates.tpz
-          mv templates/* ~/.local/share/godot/templates/3.5.3.stable/
-          
-          # Force create standard config preset maps
-          echo -e '[preset.0]\nname="Web"\nplatform="HTML5"\nrunnable=true\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="build/web/index.html"\nscript_export_mode=1\nscript_encryption_key=""\n[preset.0.options]' > export_presets.cfg
-
-      - name: Build Web Application
+      - name: Create Configuration Presets
         run: |
           mkdir -p build/web
-          godot --no-window --export "Web" build/web/index.html
+          echo -e '[preset.0]\nname="Web"\nplatform="HTML5"\nrunnable=true\nexport_filter="all_resources"\nexport_path="build/web/index.html"\n[preset.0.options]' > export_presets.cfg
+
+      - name: Compile HTML5 Build
+        run: |
+          godot -v --headless --export "Web" build/web/index.html
 
       - name: Deploy Build to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
