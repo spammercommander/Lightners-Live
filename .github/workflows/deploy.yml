@@ -6,6 +6,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   export_game:
@@ -15,18 +17,26 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Generate Missing Export Preset
+      - name: Install Godot Headless & Setup Templates
         run: |
-          if [ ! -f export_presets.cfg ]; then
-            echo -e "[preset.0]\nname=\"HTML5\"\nplatform=\"HTML5\"\nrunnable=true\nexport_filter=\"all_resources\"\n[preset.0.options]" > export_presets.cfg
-          fi
+          # Download and install Godot 3.5.3 Headless
+          wget https://github.com
+          unzip Godot_v3.5.3-stable_linux_headless.64.zip
+          mv Godot_v3.5.3-stable_linux_headless.64 /usr/local/bin/godot
+          
+          # Force structure the export requirements manually
+          mkdir -p ~/.local/share/godot/templates/3.5.3.stable
+          wget https://github.com
+          unzip Godot_v3.5.3-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/templates/3.5.3.stable/
+          
+          # Force create standard config preset maps
+          echo -e '[preset.0]\nname="Web"\nplatform="HTML5"\nrunnable=true\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="build/web/index.html"\nscript_export_mode=1\nscript_encryption_key=""\n[preset.0.options]' > export_presets.cfg
 
-      - name: Export Godot Project to HTML5
-        uses: firebelley/godot-export@v5.2.1
-        with:
-          godot_executable_download_url: https://github.com
-          export_preset_name: HTML5
-          project_file_path: project.godot
+      - name: Build Web Application
+        run: |
+          mkdir -p build/web
+          godot --no-window --export "Web" build/web/index.html
 
       - name: Deploy Build to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
