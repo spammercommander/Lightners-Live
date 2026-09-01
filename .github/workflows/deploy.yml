@@ -1,0 +1,29 @@
+name: "Export and Deploy to GitHub Pages"
+on:
+  push:
+    branches:
+      - main  # Runs automatically whenever code changes
+
+permissions:
+  contents: write
+
+jobs:
+  export_game:
+    runs-on: ubuntu-latest
+    name: Export Game
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Export Godot Project to HTML5
+        uses: firebelley/godot-export@v5.2.1
+        with:
+          godot_executable_download_url: https://github.com
+          export_preset_name: HTML5
+          project_file_path: project.godot
+
+      - name: Deploy Build to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/web
+          branch: gh-pages
